@@ -22,7 +22,7 @@ NSString * TPAACAudioConverterErrorDomain = @"com.atastypixel.TPAACAudioConverte
 
 static inline BOOL _checkResultLite(OSStatus result, const char *operation, const char* file, int line) {
     if ( result != noErr ) {
-        NSLog(@"%s:%d: %s result %d %08X %4.4s\n", file, line, operation, (int)result, (int)result, (char*)&result); 
+        NSLog(@"%s:%d: %s result %d %08X %4.4s\n", file, line, operation, (int)result, (int)result, (char*)&result);
         return NO;
     }
     return YES;
@@ -52,7 +52,7 @@ static inline BOOL _checkResultLite(OSStatus result, const char *operation, cons
 
     if ( available_set ) return available;
     
-    // get an array of AudioClassDescriptions for all installed encoders for the given format 
+    // get an array of AudioClassDescriptions for all installed encoders for the given format
     // the specifier is the format that we are interested in - this is 'aac ' in our case
     UInt32 encoderSpecifier = kAudioFormatMPEG4AAC;
     UInt32 size;
@@ -205,7 +205,7 @@ static inline BOOL _checkResultLite(OSStatus result, const char *operation, cons
         
         
         UInt32 size = sizeof(sourceFormat);
-        if ( !checkResult(ExtAudioFileGetProperty(sourceFile, kExtAudioFileProperty_FileDataFormat, &size, &sourceFormat), 
+        if ( !checkResult(ExtAudioFileGetProperty(sourceFile, kExtAudioFileProperty_FileDataFormat, &size, &sourceFormat),
                           "ExtAudioFileGetProperty(kExtAudioFileProperty_FileDataFormat)") ) {
             [self performSelectorOnMainThread:@selector(reportErrorAndCleanup:)
                                    withObject:[NSError errorWithDomain:TPAACAudioConverterErrorDomain
@@ -224,7 +224,7 @@ static inline BOOL _checkResultLite(OSStatus result, const char *operation, cons
     destinationFormat.mChannelsPerFrame = sourceFormat.mChannelsPerFrame;
     destinationFormat.mFormatID = kAudioFormatMPEG4AAC;
     UInt32 size = sizeof(destinationFormat);
-    if ( !checkResult(AudioFormatGetProperty(kAudioFormatProperty_FormatInfo, 0, NULL, &size, &destinationFormat), 
+    if ( !checkResult(AudioFormatGetProperty(kAudioFormatProperty_FormatInfo, 0, NULL, &size, &destinationFormat),
                       "AudioFormatGetProperty(kAudioFormatProperty_FormatInfo)") ) {
         [self performSelectorOnMainThread:@selector(reportErrorAndCleanup:)
                                withObject:[NSError errorWithDomain:TPAACAudioConverterErrorDomain
@@ -245,7 +245,7 @@ static inline BOOL _checkResultLite(OSStatus result, const char *operation, cons
         [self performSelectorOnMainThread:@selector(reportErrorAndCleanup:)
                                withObject:[NSError errorWithDomain:TPAACAudioConverterErrorDomain
                                                               code:TPAACAudioConverterFileError
-                                                          userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Couldn't open the source file", @"Error message") forKey:NSLocalizedDescriptionKey]]
+                                                          userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Couldn't open the destination file", @"Error message") forKey:NSLocalizedDescriptionKey]]
                             waitUntilDone:NO];
         _processing = NO;
         return;
@@ -267,9 +267,9 @@ static inline BOOL _checkResultLite(OSStatus result, const char *operation, cons
     }
     
     size = sizeof(clientFormat);
-    if ( (sourceFile && !checkResult(ExtAudioFileSetProperty(sourceFile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat), 
+    if ( (sourceFile && !checkResult(ExtAudioFileSetProperty(sourceFile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat),
                       "ExtAudioFileSetProperty(sourceFile, kExtAudioFileProperty_ClientDataFormat")) ||
-         !checkResult(ExtAudioFileSetProperty(destinationFile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat), 
+         !checkResult(ExtAudioFileSetProperty(destinationFile, kExtAudioFileProperty_ClientDataFormat, size, &clientFormat),
                       "ExtAudioFileSetProperty(destinationFile, kExtAudioFileProperty_ClientDataFormat")) {
         if ( sourceFile ) ExtAudioFileDispose(sourceFile);
         ExtAudioFileDispose(destinationFile);
@@ -285,7 +285,7 @@ static inline BOOL _checkResultLite(OSStatus result, const char *operation, cons
     BOOL canResumeFromInterruption = YES;
     AudioConverterRef converter;
     size = sizeof(converter);
-    if ( checkResult(ExtAudioFileGetProperty(destinationFile, kExtAudioFileProperty_AudioConverter, &size, &converter), 
+    if ( checkResult(ExtAudioFileGetProperty(destinationFile, kExtAudioFileProperty_AudioConverter, &size, &converter),
                       "ExtAudioFileGetProperty(kExtAudioFileProperty_AudioConverter;)") ) {
         UInt32 canResume = 0;
         size = sizeof(canResume);
